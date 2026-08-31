@@ -1,0 +1,19 @@
+{
+  "backend": "gemini-2.5-flash (OpenAI-compatible, Gemini)",
+  "opencode": "billing-blocked (CreditsError) - not measured",
+  "extraction_seconds": {
+    "basic_9_notes": 39.21,
+    "intermediate_17_notes": 68.10,
+    "advanced_34_notes": 297.70
+  },
+  "cap_latency_seconds": {
+    "basic": {"god_nodes": 0.92, "query_1": 0.56, "query_2": 0.45, "path_1": 0.45, "path_2": 0.41, "explain_1": 0.41},
+    "intermediate": {"god_nodes": 0.37, "query_1": 0.43, "query_2": 0.41, "path_1": 0.5, "path_2": 0.41, "explain_1": 0.39},
+    "advanced": {"god_nodes": 0.37, "query_1": 0.39, "query_2": 0.37, "path_1": 0.41, "path_2": 0.48, "explain_1": 0.41}
+  },
+  "graph_sizes": {
+    "basic": [9, 29, 2],
+    "intermediate": [17, 69, 3],
+    "advanced": [34, 148, 4]
+  }
+}

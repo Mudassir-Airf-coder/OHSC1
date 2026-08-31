@@ -1,0 +1,90 @@
+{
+  "scenarios": [
+    {
+      "scenario": "1_missing_api_key",
+      "pass": true,
+      "leaked": false,
+      "detail": "status=0 detail=env GRAPHIFY_BRAIN_NO_SUCH_KEY not set"
+    },
+    {
+      "scenario": "2_invalid_api_key",
+      "pass": true,
+      "leaked": false,
+      "detail": "status=400 detail=Bad Request"
+    },
+    {
+      "scenario": "3_invalid_endpoint",
+      "pass": true,
+      "leaked": false,
+      "detail": "status=0 detail=env GRAPHIFY_BRAIN_NO_SUCH_KEY not set"
+    },
+    {
+      "scenario": "4_unavailable_model",
+      "pass": true,
+      "leaked": false,
+      "detail": "status=404 detail=Not Found"
+    },
+    {
+      "scenario": "5_graphify_missing",
+      "pass": true,
+      "leaked": false,
+      "detail": "is_available()=True"
+    },
+    {
+      "scenario": "6_malformed_graph",
+      "pass": true,
+      "leaked": false,
+      "detail": "structured parse error: JSONDecodeError"
+    },
+    {
+      "scenario": "7_empty_vault",
+      "pass": true,
+      "leaked": false,
+      "detail": "rc=1 (empty handled)"
+    },
+    {
+      "scenario": "8_corrupted_note",
+      "pass": true,
+      "leaked": false,
+      "detail": "rc=1 (corrupt note handled)"
+    },
+    {
+      "scenario": "9_timeout",
+      "pass": true,
+      "leaked": false,
+      "detail": "status=0 detail=env GRAPHIFY_BRAIN_NO_SUCH_KEY not set"
+    },
+    {
+      "scenario": "10_network_failure",
+      "pass": true,
+      "leaked": false,
+      "detail": "status=0 detail=env GRAPHIFY_BRAIN_NO_SUCH_KEY not set"
+    },
+    {
+      "scenario": "11_unrelated_request",
+      "pass": true,
+      "leaked": false,
+      "detail": "routed=vault_agent"
+    },
+    {
+      "scenario": "12_wrong_vault_path",
+      "pass": true,
+      "leaked": false,
+      "detail": "GRAPH BUILD FAILED"
+    },
+    {
+      "scenario": "13_target_real_vault",
+      "pass": true,
+      "leaked": false,
+      "detail": "graph_path=D:\\HOSC\\graphify\\graphs\\graph.json"
+    },
+    {
+      "scenario": "14_mcp_unavailable",
+      "pass": true,
+      "leaked": false,
+      "detail": "adapter importable; is_available()=True (no crash)"
+    }
+  ],
+  "vault_unchanged": true,
+  "vault_file_count": 16
+}

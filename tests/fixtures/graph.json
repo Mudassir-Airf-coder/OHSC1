@@ -1,0 +1,15 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {"id": "ohsc", "label": "OHSC", "type": "file", "community": 0},
+    {"id": "graphify", "label": "Graphify", "type": "file", "community": 0},
+    {"id": "obsidian", "label": "Obsidian", "type": "file", "community": 0}
+  ],
+  "links": [
+    {"source": "ohsc", "target": "graphify", "label": "links", "confidence": "EXTRACTED"},
+    {"source": "graphify", "target": "obsidian", "label": "links", "confidence": "EXTRACTED"}
+  ],
+  "hyperedges": []
+}

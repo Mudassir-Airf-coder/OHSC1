@@ -1,0 +1,23 @@
+# OHSC local artifacts (never commit)
+.env
+.env.*
+*.log
+__pycache__/
+.pytest_cache/
+*.pyc
+.vscode/
+node_modules/
+
+# Graphify runtime output (outside vaults)
+graphify/graphs/
+graphify/validation/
+validation/
+
+# Secret material
+auth.json
+*.key
+*credentials*
+
+# OS noise
+.DS_Store
+Thumbs.db

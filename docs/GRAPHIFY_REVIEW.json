@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "issues": [],
+  "recommendations": [
+    "graphify_agent passed structural review",
+    "all Graphify adapter modules import successfully",
+    "planner routes graph requests to graphify_agent",
+    "graphify workspace isolated from vault",
+    "test suite green: 50 passed in 30.36s",
+    "graphify-mcp executable present"
+  ],
+  "required_fixes": [],
+  "approved": true,
+  "summary_line": "50 passed in 30.36s"
+}

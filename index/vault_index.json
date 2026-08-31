@@ -1,0 +1,215 @@
+{
+  "notes": [
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Graph Engineering by Adnan.md",
+      "title": "Graph Engineering by Adnan",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Graph Engineering",
+        "Graph Engineering by Humna"
+      ],
+      "backlinks": [
+        "Graph Engineering MOC",
+        "Graph Engineering"
+      ],
+      "mtime": 1787392470.5602808
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Graph Engineering by Humna.md",
+      "title": "Graph Engineering by Humna",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Graph Engineering",
+        "Harness Engineering by Humna",
+        "Loop Engineering by Humna"
+      ],
+      "backlinks": [
+        "Graph Engineering by Adnan",
+        "Graph Engineering MOC",
+        "Graph Engineering",
+        "Harness Engineering by Humna",
+        "loop Engineering by Humna"
+      ],
+      "mtime": 1787390365.767907
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Graph Engineering MOC.md",
+      "title": "Graph Engineering MOC",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Graph Engineering",
+        "Harness Engineering",
+        "Loop Engineering",
+        "Graph Engineering by Humna",
+        "Harness Engineering by Humna",
+        "loop Engineering by Humna",
+        "The Story of PixelDesk From Prompting to a Graph of Loops",
+        "Graph Engineering by Adnan",
+        "Harness Engineering by Adnan",
+        "loop Engineering by Adnan"
+      ],
+      "backlinks": [],
+      "mtime": 1787392470.679597
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Graph Engineering.md",
+      "title": "Graph Engineering",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Loop Engineering",
+        "Harness Engineering",
+        "Graph Engineering by Humna",
+        "The Story of PixelDesk From Prompting to a Graph of Loops",
+        "Graph Engineering by Adnan"
+      ],
+      "backlinks": [
+        "Graph Engineering by Adnan",
+        "Graph Engineering by Humna",
+        "Graph Engineering MOC",
+        "Harness Engineering by Adnan",
+        "Harness Engineering",
+        "Loop Engineering",
+        "The Story of PixelDesk From Prompting to a Graph of Loops"
+      ],
+      "mtime": 1787392470.617115
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Harness Engineering by Adnan.md",
+      "title": "Harness Engineering by Adnan",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Harness Engineering",
+        "Harness Engineering by Humna",
+        "Graph Engineering"
+      ],
+      "backlinks": [
+        "Graph Engineering MOC",
+        "Harness Engineering"
+      ],
+      "mtime": 1787392470.5766902
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Harness Engineering by Humna.md",
+      "title": "Harness Engineering by Humna",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Harness Engineering",
+        "Graph Engineering by Humna",
+        "Loop Engineering by Humna"
+      ],
+      "backlinks": [
+        "Graph Engineering by Humna",
+        "Graph Engineering MOC",
+        "Harness Engineering by Adnan",
+        "Harness Engineering",
+        "loop Engineering by Humna"
+      ],
+      "mtime": 1787388608.7397113
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Harness Engineering.md",
+      "title": "Harness Engineering",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Loop Engineering",
+        "Graph Engineering",
+        "Harness Engineering by Humna",
+        "The Story of PixelDesk From Prompting to a Graph of Loops",
+        "Harness Engineering by Adnan"
+      ],
+      "backlinks": [
+        "Graph Engineering MOC",
+        "Graph Engineering",
+        "Harness Engineering by Adnan",
+        "Harness Engineering by Humna",
+        "loop Engineering by Adnan",
+        "Loop Engineering",
+        "The Story of PixelDesk From Prompting to a Graph of Loops"
+      ],
+      "mtime": 1787392470.641335
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\loop Engineering by Adnan.md",
+      "title": "loop Engineering by Adnan",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Loop Engineering",
+        "loop Engineering by Humna",
+        "Harness Engineering"
+      ],
+      "backlinks": [
+        "Graph Engineering MOC",
+        "Loop Engineering"
+      ],
+      "mtime": 1787392470.5961287
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\loop Engineering by Humna.md",
+      "title": "loop Engineering by Humna",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Loop Engineering",
+        "Graph Engineering by Humna",
+        "Harness Engineering by Humna"
+      ],
+      "backlinks": [
+        "Graph Engineering by Humna",
+        "Graph Engineering MOC",
+        "Harness Engineering by Humna",
+        "loop Engineering by Adnan",
+        "Loop Engineering"
+      ],
+      "mtime": 1787391224.42055
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\Loop Engineering.md",
+      "title": "Loop Engineering",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Harness Engineering",
+        "Graph Engineering",
+        "Loop Engineering by Humna",
+        "The Story of PixelDesk From Prompting to a Graph of Loops",
+        "loop Engineering by Adnan"
+      ],
+      "backlinks": [
+        "Graph Engineering MOC",
+        "Graph Engineering",
+        "Harness Engineering",
+        "loop Engineering by Adnan",
+        "loop Engineering by Humna",
+        "The Story of PixelDesk From Prompting to a Graph of Loops"
+      ],
+      "mtime": 1787392470.6614425
+    },
+    {
+      "path": "C:\\Users\\HAJI LAPTOP G55\\Documents\\Obsidian Vault\\The Story of PixelDesk From Prompting to a Graph of Loops.md",
+      "title": "The Story of PixelDesk From Prompting to a Graph of Loops",
+      "tags": [],
+      "properties": {},
+      "links": [
+        "Loop Engineering",
+        "Harness Engineering",
+        "Graph Engineering"
+      ],
+      "backlinks": [
+        "Graph Engineering MOC",
+        "Graph Engineering",
+        "Harness Engineering",
+        "Loop Engineering"
+      ],
+      "mtime": 1787388608.7865777
+    }
+  ],
+  "updated_at": 1787811152.3705766
+}
