@@ -17,7 +17,7 @@ import json
 import sys
 from pathlib import Path
 
-# Ensure the package root (D:\HOSC) is importable when run directly.
+# Ensure the package root is importable when run directly.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from .system import build_runtime
@@ -42,11 +42,55 @@ def main(argv=None) -> int:
     #   ohsc --graphify query "x" (direct graphify mode)
     # unambiguous without a fragile subparser.
     _argv = list(sys.argv[1:] if argv is None else argv)
-    _gateway_cmds = {"activate", "capabilities", "manifest", "status", "agents"}
+    _gateway_cmds = {"activate", "capabilities", "manifest", "status", "agents", "run", "doctor"}
     _first = next((a for a in _argv if not a.startswith("-")), None)
     if _first in _gateway_cmds and "--graphify" not in _argv:
         cmd = _first
         as_json = "--json" in _argv
+        if cmd == "run":
+            from .core.session import create_session_token
+            from .gateway import activation_status, format_activation
+            checks = activation_status()
+            session = create_session_token()
+            if as_json:
+                payload = {
+                    "activation": checks,
+                    "session": session,
+                }
+                print(json.dumps(payload, indent=2, default=str))
+            else:
+                print(format_activation(checks))
+                print()
+                print("OHSC Session")
+                print("=" * 40)
+                print(f"Token     : {session['token']}")
+                print(f"Expires   : {session['expires_at']} (unix)")
+                print(f"Skill     : {session['skill_path']}")
+                print()
+                print("Next steps for any AI tool:")
+                print("  1. Copy the token above")
+                print("  2. Read skills/OHSC_AGENT_SKILL.md")
+                print("  3. Run: ohsc activate")
+                print("  4. Run: ohsc capabilities --json")
+                print("  5. Run: ohsc agents --json")
+            return 0 if checks.get("overall") in ("ACTIVE", "DEGRADED") else 1
+
+        if cmd == "doctor":
+            from .gateway import activation_status
+            checks = activation_status()
+            if as_json:
+                print(json.dumps(checks, indent=2, default=str))
+            else:
+                print("OHSC Doctor")
+                print("=" * 40)
+                for k, v in checks.items():
+                    if k == "overall":
+                        continue
+                    print(f"  {k}: {v}")
+                print("-" * 40)
+                print(f"Overall: {checks.get('overall')}")
+            return 0 if checks.get("overall") == "ACTIVE" else 1
+
         if cmd == "agents":
             rt = build_runtime()
             if as_json:
