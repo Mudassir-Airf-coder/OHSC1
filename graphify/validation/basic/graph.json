@@ -1,0 +1,488 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "ai_knowledge_graph_stack",
+        "label": "AI Knowledge Graph Stack",
+        "nodes": [
+          "ai_agent",
+          "knowledge_graph",
+          "graphify",
+          "obsidian",
+          "wikilinks",
+          "graph_engineering"
+        ],
+        "relation": "form",
+        "confidence": "INFERRED",
+        "confidence_score": 0.75,
+        "source_file": null
+      },
+      {
+        "id": "foundations_of_ai",
+        "label": "Foundations of AI",
+        "nodes": [
+          "artificial_intelligence",
+          "machine_learning",
+          "neural_networks"
+        ],
+        "relation": "form",
+        "confidence": "INFERRED",
+        "confidence_score": 0.75,
+        "source_file": null
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "ai_agent",
+      "label": "AI Agent",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "ai agent",
+      "rationale": null,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "graph_engineering",
+      "label": "Graph Engineering",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "graph engineering",
+      "rationale": null,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "graphify",
+      "label": "Graphify",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "graphify",
+      "rationale": null,
+      "source_file": "Graphify.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "obsidian",
+      "label": "Obsidian",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "obsidian",
+      "rationale": null,
+      "source_file": "Obsidian.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "wikilinks",
+      "label": "Wikilinks",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "wikilinks",
+      "rationale": null,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "artificial_intelligence",
+      "label": "Artificial Intelligence",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "artificial intelligence",
+      "rationale": null,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "knowledge_graph",
+      "label": "Knowledge Graph",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "knowledge graph",
+      "rationale": null,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "machine_learning",
+      "label": "Machine Learning",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "machine learning",
+      "rationale": null,
+      "source_file": "Machine Learning.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "neural_networks",
+      "label": "Neural Networks",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "neural networks",
+      "rationale": null,
+      "source_file": "Neural Networks.md",
+      "source_location": null,
+      "source_url": null
+    }
+  ],
+  "links": [
+    {
+      "source": "ai_agent",
+      "target": "artificial_intelligence",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graph_engineering",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graph_engineering",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graph_engineering",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graphify",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graphify.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graphify",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graphify.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "knowledge_graph",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "knowledge_graph",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "knowledge_graph",
+      "target": "wikilinks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "machine_learning",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Machine Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "machine_learning",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Machine Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "neural_networks",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Neural Networks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "neural_networks",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Neural Networks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "obsidian",
+      "target": "wikilinks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Obsidian.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "wikilinks",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "wikilinks",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "wikilinks",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "ai_knowledge_graph_stack",
+      "label": "AI Knowledge Graph Stack",
+      "nodes": [
+        "ai_agent",
+        "knowledge_graph",
+        "graphify",
+        "obsidian",
+        "wikilinks",
+        "graph_engineering"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": null
+    },
+    {
+      "id": "foundations_of_ai",
+      "label": "Foundations of AI",
+      "nodes": [
+        "artificial_intelligence",
+        "machine_learning",
+        "neural_networks"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": null
+    }
+  ]
+}

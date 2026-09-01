@@ -1,0 +1,1032 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "ai_agent_execution_flow",
+        "label": "AI Agent Execution Flow",
+        "nodes": [
+          "ai_agent",
+          "planner",
+          "orchestrator",
+          "reviewer"
+        ],
+        "relation": "participate_in",
+        "confidence": "INFERRED",
+        "confidence_score": 0.75,
+        "source_file": "AI Agent.md"
+      },
+      {
+        "id": "core_ai_concepts",
+        "label": "Core AI Concepts",
+        "nodes": [
+          "artificial_intelligence",
+          "machine_learning",
+          "neural_networks",
+          "deep_learning",
+          "ai_agent",
+          "knowledge_graph"
+        ],
+        "relation": "form",
+        "confidence": "INFERRED",
+        "confidence_score": 0.75,
+        "source_file": "Artificial Intelligence.md"
+      },
+      {
+        "id": "knowledge_management_stack",
+        "label": "Knowledge Management Stack",
+        "nodes": [
+          "obsidian",
+          "graphify",
+          "wikilinks",
+          "knowledge_graph",
+          "graph_engineering"
+        ],
+        "relation": "form",
+        "confidence": "INFERRED",
+        "confidence_score": 0.75,
+        "source_file": "Obsidian.md"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "coffee_brewing",
+      "label": "Coffee Brewing",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "coffee brewing",
+      "rationale": "This note is intentionally only weakly connected to the rest of the knowledge base, representing a peripheral interest stored in the same Obsidian vault.",
+      "source_file": "Coffee Brewing.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "graph_engineering",
+      "label": "Graph Engineering",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "graph engineering",
+      "rationale": null,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "obsidian",
+      "label": "Obsidian",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "obsidian",
+      "rationale": null,
+      "source_file": "Obsidian.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "semantic_retrieval",
+      "label": "Semantic Retrieval",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "semantic retrieval",
+      "rationale": null,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "vector_search",
+      "label": "Vector Search",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "vector search",
+      "rationale": null,
+      "source_file": "Vector Search.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "wikilinks",
+      "label": "Wikilinks",
+      "author": null,
+      "captured_at": null,
+      "community": 0,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "wikilinks",
+      "rationale": null,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "graphify",
+      "label": "Graphify",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "graphify",
+      "rationale": null,
+      "source_file": "Graphify.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "knowledge_graph",
+      "label": "Knowledge Graph",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "knowledge graph",
+      "rationale": null,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "orchestrator",
+      "label": "Orchestrator",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "orchestrator",
+      "rationale": null,
+      "source_file": "Orchestrator.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "planner",
+      "label": "Planner",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "planner",
+      "rationale": null,
+      "source_file": "Planner.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "reviewer",
+      "label": "Reviewer",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "reviewer",
+      "rationale": null,
+      "source_file": "Reviewer.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "vault_automation",
+      "label": "Vault Automation",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "vault automation",
+      "rationale": null,
+      "source_file": "Vault Automation.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "ai_agent",
+      "label": "AI Agent",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "ai agent",
+      "rationale": null,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "artificial_intelligence",
+      "label": "Artificial Intelligence",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "artificial intelligence",
+      "rationale": null,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "deep_learning",
+      "label": "Deep Learning",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "deep learning",
+      "rationale": null,
+      "source_file": "Deep Learning.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "machine_learning",
+      "label": "Machine Learning",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "machine learning",
+      "rationale": null,
+      "source_file": "Machine Learning.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "neural_networks",
+      "label": "Neural Networks",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "neural networks",
+      "rationale": null,
+      "source_file": "Neural Networks.md",
+      "source_location": null,
+      "source_url": null
+    }
+  ],
+  "links": [
+    {
+      "source": "ai_agent",
+      "target": "artificial_intelligence",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "ai_agent",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AI Agent.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "artificial_intelligence",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Artificial Intelligence.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "coffee_brewing",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Coffee Brewing.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "deep_learning",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Deep Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "deep_learning",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Deep Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "deep_learning",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Deep Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "deep_learning",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Deep Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "deep_learning",
+      "target": "vector_search",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Deep Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graph_engineering",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graph_engineering",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graph_engineering",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graph Engineering.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graphify",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graphify.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "graphify",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Graphify.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "knowledge_graph",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "knowledge_graph",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "knowledge_graph",
+      "target": "wikilinks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Knowledge Graph.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "machine_learning",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Machine Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "machine_learning",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Machine Learning.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "neural_networks",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Neural Networks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "neural_networks",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Neural Networks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "obsidian",
+      "target": "vault_automation",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Obsidian.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "obsidian",
+      "target": "wikilinks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Obsidian.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "orchestrator",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "orchestrator",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "orchestrator",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "orchestrator",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "orchestrator",
+      "target": "planner",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "orchestrator",
+      "target": "reviewer",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Orchestrator.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "planner",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Planner.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "planner",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Planner.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "planner",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Planner.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "planner",
+      "target": "reviewer",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Planner.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "reviewer",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Reviewer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "reviewer",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Reviewer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "reviewer",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Reviewer.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "machine_learning",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "orchestrator",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "vector_search",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "semantic_retrieval",
+      "target": "wikilinks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Semantic Retrieval.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vault_automation",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vault Automation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vault_automation",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vault Automation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vault_automation",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vault Automation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vault_automation",
+      "target": "orchestrator",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vault Automation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vault_automation",
+      "target": "reviewer",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vault Automation.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vector_search",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vector Search.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vector_search",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vector Search.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vector_search",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vector Search.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vector_search",
+      "target": "knowledge_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vector Search.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vector_search",
+      "target": "neural_networks",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vector Search.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "vector_search",
+      "target": "obsidian",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Vector Search.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "wikilinks",
+      "target": "ai_agent",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "wikilinks",
+      "target": "graph_engineering",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "wikilinks",
+      "target": "graphify",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Wikilinks.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "ai_agent_execution_flow",
+      "label": "AI Agent Execution Flow",
+      "nodes": [
+        "ai_agent",
+        "planner",
+        "orchestrator",
+        "reviewer"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "AI Agent.md"
+    },
+    {
+      "id": "core_ai_concepts",
+      "label": "Core AI Concepts",
+      "nodes": [
+        "artificial_intelligence",
+        "machine_learning",
+        "neural_networks",
+        "deep_learning",
+        "ai_agent",
+        "knowledge_graph"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "Artificial Intelligence.md"
+    },
+    {
+      "id": "knowledge_management_stack",
+      "label": "Knowledge Management Stack",
+      "nodes": [
+        "obsidian",
+        "graphify",
+        "wikilinks",
+        "knowledge_graph",
+        "graph_engineering"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "Obsidian.md"
+    }
+  ]
+}

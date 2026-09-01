@@ -1,0 +1,56 @@
+{
+  "stats": {
+    "ok": true,
+    "nodes": 52,
+    "links": 185,
+    "communities": 0,
+    "dt": 0.0
+  },
+  "god_nodes": {
+    "ok": false,
+    "rc": 1,
+    "out": "",
+    "err": "ta\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 914, in home\n    return cls(\"~\").expanduser()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\HAJI LAPTOP G55\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1385, in expanduser\n    raise RuntimeError(\"Could not determine home directory.\")\nRuntimeError: Could not determine home directory.",
+    "dt": 0.37
+  },
+  "orphans": {
+    "ok": true,
+    "out": "orphans: none",
+    "dt": 0.0
+  },
+  "query_1": {
+    "ok": false,
+    "rc": 1,
+    "out": "",
+    "err": "ta\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 914, in home\n    return cls(\"~\").expanduser()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\HAJI LAPTOP G55\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1385, in expanduser\n    raise RuntimeError(\"Could not determine home directory.\")\nRuntimeError: Could not determine home directory.",
+    "dt": 0.39
+  },
+  "query_2": {
+    "ok": false,
+    "rc": 1,
+    "out": "",
+    "err": "ta\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 914, in home\n    return cls(\"~\").expanduser()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\HAJI LAPTOP G55\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1385, in expanduser\n    raise RuntimeError(\"Could not determine home directory.\")\nRuntimeError: Could not determine home directory.",
+    "dt": 0.37
+  },
+  "path_1": {
+    "ok": false,
+    "rc": 1,
+    "out": "",
+    "err": "ta\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 914, in home\n    return cls(\"~\").expanduser()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\HAJI LAPTOP G55\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1385, in expanduser\n    raise RuntimeError(\"Could not determine home directory.\")\nRuntimeError: Could not determine home directory.",
+    "dt": 0.41
+  },
+  "path_2": {
+    "ok": false,
+    "rc": 1,
+    "out": "",
+    "err": "ta\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 914, in home\n    return cls(\"~\").expanduser()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\HAJI LAPTOP G55\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1385, in expanduser\n    raise RuntimeError(\"Could not determine home directory.\")\nRuntimeError: Could not determine home directory.",
+    "dt": 0.48
+  },
+  "explain_1": {
+    "ok": false,
+    "rc": 1,
+    "out": "",
+    "err": "ta\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 914, in home\n    return cls(\"~\").expanduser()\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\HAJI LAPTOP G55\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib\\pathlib.py\", line 1385, in expanduser\n    raise RuntimeError(\"Could not determine home directory.\")\nRuntimeError: Could not determine home directory.",
+    "dt": 0.41
+  }
+}
