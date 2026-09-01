@@ -1,7 +1,7 @@
 # OHSC Agent Skill
 
 > Operating manual for external coding/AI agents that want to use the OHSC
-> (Hermes Obsidian System Control) capability engine through the **Universal
+> (Obsidian System Control) capability engine through the **Universal
 > Capability Gateway**. This file is the single source of truth for *how to
 > drive OHSC* — it does NOT replace internal implementation; it is the
 > agent-facing interface layer.
