@@ -2,7 +2,7 @@
 
 ## Purpose
 
-OHSC (Hermes Obsidian System Control) is a **local control plane** for Obsidian vaults. It converts natural-language or structured requests into authorized, auditable operations against Markdown vault files, and exposes the same surface to external AI agents through a CLI + skill contract.
+OHSC (Obsidian System Control) is a **local control plane** for Obsidian vaults. It converts natural-language or structured requests into authorized, auditable operations against Markdown vault files, and exposes the same surface to external AI agents through a CLI + skill contract.
 
 ## High-level flow
 

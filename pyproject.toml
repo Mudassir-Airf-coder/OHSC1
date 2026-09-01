@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ohsc"
 version = "1.0.0"
-description = "OHSC — Hermes Obsidian System Control. Multi-agent control plane for Obsidian vaults with Graphify integration."
+description = "OHSC — Obsidian System Control. Multi-agent control plane for Obsidian vaults with Graphify integration."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
