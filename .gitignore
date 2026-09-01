@@ -21,3 +21,12 @@ auth.json
 # OS noise
 .DS_Store
 Thumbs.db
+
+# Runtime / local
+memory/sessions/
+logs/
+index/
+snapshots/
+vault/
+bin/*.exe
+files (1)/

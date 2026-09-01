@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ohsc"
+version = "1.0.0"
+description = "OHSC — Hermes Obsidian System Control. Multi-agent control plane for Obsidian vaults with Graphify integration."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+  { name = "OHSC Contributors" }
+]
+keywords = ["obsidian", "knowledge-graph", "agents", "graphify", "mcp", "cli"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Utilities",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+ohsc = "ohsc_launcher:main"
+
+[project.urls]
+Homepage = "https://github.com/Mudassir-Airf-coder/OHSC1"
+Repository = "https://github.com/Mudassir-Airf-coder/OHSC1"
+
+[tool.setuptools]
+py-modules = ["ohsc_launcher"]
+packages = ["ohsc", "ohsc.core", "ohsc.agents", "ohsc.integrations", "ohsc.integrations.graphify", "ohsc.skills"]
+
+[tool.setuptools.package-data]
+ohsc = ["capabilities.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
