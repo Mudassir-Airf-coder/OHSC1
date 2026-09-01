@@ -14,18 +14,43 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Dict, List, Any
 
-# ---------------------------------------------------------------------------
-# Default, authoritative roots. These can be overridden by environment
-# variables or a config file, but the defaults are deterministic.
-# ---------------------------------------------------------------------------
-DEFAULT_SYSTEM_ROOT = Path(r"D:\HOSC").resolve()
-DEFAULT_VAULT_ROOT = Path(r"D:\Mudassir database").resolve()
+
+def _detect_system_root() -> Path:
+    """Resolve OHSC installation root portably.
+
+    Priority:
+    1. OHSC_SYSTEM_ROOT environment variable
+    2. Directory containing the ``ohsc`` package (repo / install root)
+    """
+    env = os.environ.get("OHSC_SYSTEM_ROOT")
+    if env:
+        return Path(env).expanduser().resolve()
+    # ohsc/config.py -> parent(ohsc) -> parent(repo root)
+    return Path(__file__).resolve().parent.parent
+
+
+def _detect_vault_root(system_root: Path) -> Path:
+    """Resolve vault root portably.
+
+    Priority:
+    1. OHSC_VAULT_ROOT environment variable
+    2. system_root / "vault" (safe local default — never a personal path)
+    """
+    env = os.environ.get("OHSC_VAULT_ROOT")
+    if env:
+        return Path(env).expanduser().resolve()
+    return (system_root / "vault").resolve()
+
+
+# Portable defaults (no machine-specific drive letters or usernames).
+DEFAULT_SYSTEM_ROOT = _detect_system_root()
+DEFAULT_VAULT_ROOT = _detect_vault_root(DEFAULT_SYSTEM_ROOT)
 
 
 def _env_path(name: str, default: Path) -> Path:
     val = os.environ.get(name)
     if val:
-        return Path(val).resolve()
+        return Path(val).expanduser().resolve()
     return default
 
 
@@ -66,7 +91,7 @@ class SystemConfig:
         ):
             value = getattr(self, attr)
             if isinstance(value, str):
-                setattr(self, attr, Path(value).resolve())
+                setattr(self, attr, Path(value).expanduser().resolve())
         if not self.allowed_roots:
             self.allowed_roots = [str(self.system_root), str(self.vault_root)]
 
@@ -103,7 +128,9 @@ class SystemConfig:
             p.mkdir(parents=True, exist_ok=True)
 
 
-_CONFIG_PATH = DEFAULT_SYSTEM_ROOT / "config" / "ohsc.json"
+def _config_path(system_root: Path) -> Path:
+    return system_root / "config" / "ohsc.json"
+
 
 # Singleton loaded configuration. Falls back to defaults when the file is
 # missing or invalid so the system can always bootstrap itself.
@@ -111,16 +138,43 @@ CONFIG: SystemConfig
 
 
 def _build_config() -> SystemConfig:
-    cfg = SystemConfig()
+    system_root = _detect_system_root()
+    cfg = SystemConfig(
+        system_root=system_root,
+        vault_root=_detect_vault_root(system_root),
+    )
     # Allow environment overrides for the two most important roots.
     cfg.system_root = _env_path("OHSC_SYSTEM_ROOT", cfg.system_root)
     cfg.vault_root = _env_path("OHSC_VAULT_ROOT", cfg.vault_root)
     cfg.allowed_roots = [str(cfg.system_root), str(cfg.vault_root)]
 
-    if _CONFIG_PATH.exists():
+    # Re-derive dependent dirs from the resolved system_root unless overridden.
+    cfg.log_dir = cfg.system_root / "logs"
+    cfg.memory_dir = cfg.system_root / "memory"
+    cfg.index_dir = cfg.system_root / "index"
+    cfg.backup_dir = cfg.system_root / "snapshots"
+    cfg.test_vault_root = cfg.system_root / "tests" / "fixtures" / "test_vault"
+
+    cfg_path = _config_path(cfg.system_root)
+    if cfg_path.exists():
         try:
-            data = json.loads(_CONFIG_PATH.read_text(encoding="utf-8"))
-            cfg = SystemConfig.from_dict({**cfg.to_dict(), **data})
+            data = json.loads(cfg_path.read_text(encoding="utf-8"))
+            # Merge non-root settings from file. Roots stay portable unless
+            # explicitly overridden by environment variables.
+            data_no_roots = {
+                k: v for k, v in data.items()
+                if k not in ("system_root", "vault_root", "allowed_roots")
+            }
+            merged = {**cfg.to_dict(), **data_no_roots}
+            cfg = SystemConfig.from_dict(merged)
+            # Env always wins for the two roots.
+            cfg.system_root = _env_path("OHSC_SYSTEM_ROOT", _detect_system_root())
+            cfg.vault_root = _env_path("OHSC_VAULT_ROOT", _detect_vault_root(cfg.system_root))
+            cfg.allowed_roots = [str(cfg.system_root), str(cfg.vault_root)]
+            cfg.log_dir = cfg.system_root / "logs"
+            cfg.memory_dir = cfg.system_root / "memory"
+            cfg.index_dir = cfg.system_root / "index"
+            cfg.backup_dir = cfg.system_root / "snapshots"
         except Exception:
             # Never crash on a bad config file; keep safe defaults.
             pass
