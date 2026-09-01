@@ -1,4 +1,4 @@
-# OHSC — Hermes Obsidian System Control
+# OHSC — Obsidian System Control
 
 **A local multi-agent control plane for Obsidian vaults.**  
 Any AI coding tool can activate OHSC, read one skill file, and safely operate your knowledge base — notes, links, search, snapshots, and semantic graphs.
@@ -68,7 +68,7 @@ export OHSC_VAULT_ROOT="/path/to/your/obsidian/vault"
 
 # Windows PowerShell
 $env:OHSC_SYSTEM_ROOT = (Get-Location).Path
-$env:OHSC_VAULT_ROOT = "C:\path\to\your/obsidian\vault"
+$env:OHSC_VAULT_ROOT = "C:\\path\\to\\your\\obsidian\\vault"
 ```
 
 Optional secrets (never commit):
@@ -185,7 +185,7 @@ OHSC keeps Graphify as a **subsystem**, not a merge into core:
 
 Artifacts are written under the OHSC workspace (not inside the user vault by default).
 
-Graphify Brain (optional LLM backend) is configured for **OpenCode** (`opencode/hy3-free`), not OpenAI-as-branding. API keys stay in environment variables only.
+Graphify Brain (optional LLM backend) is configured for **OpenCode** (`opencode/hy3-free`). API keys stay in environment variables only.
 
 ---
 
@@ -239,19 +239,11 @@ See [`.env.example`](.env.example).
 4. **Snapshots** — capture before risky changes  
 5. **Reviewer** — structured verification of outcomes  
 
-OHSC is designed so an AI agent cannot “wander” the whole disk or silently destroy a vault.
-
 ---
 
-## Vision (real product direction)
+## Vision
 
-OHSC is meant to become the **standard local control plane** between:
-
-- human users  
-- any AI coding agent  
-- an Obsidian knowledge environment  
-
-Target experience:
+OHSC is the **local control plane** between humans, any AI coding agent, and an Obsidian knowledge environment.
 
 ```text
 pip install / one-line install
@@ -259,8 +251,6 @@ pip install / one-line install
      → token + skill
      → any AI tool understands and controls the vault safely
 ```
-
-Future (documented, not claimed as done): richer MCP surface, stronger installers, cross-platform polish, and optional higher-level “master generator” tooling around OHSC + Graphify + memory systems.
 
 ---
 
@@ -271,8 +261,6 @@ Future (documented, not claimed as done): richer MCP surface, stronger installer
 | [skills/OHSC_AGENT_SKILL.md](skills/OHSC_AGENT_SKILL.md) | **Start here if you are an AI agent** |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Core architecture |
 | [docs/USAGE.md](docs/USAGE.md) | How to use OHSC day to day |
-| [SYSTEM_OVERVIEW.md](SYSTEM_OVERVIEW.md) | System overview from source |
-| [USAGE_GUIDE.md](USAGE_GUIDE.md) | Additional usage notes |
 
 ---
 
@@ -283,10 +271,7 @@ export OHSC_SYSTEM_ROOT="$(pwd)"
 export OHSC_VAULT_ROOT="/tmp/ohsc_test_vault"
 pip install -e ".[dev]"
 python -m pytest
-python -m compileall ohsc
 ```
-
-Core is largely **stdlib-first**. Optional Graphify / OpenCode pieces degrade gracefully when missing.
 
 ---
 
@@ -311,5 +296,5 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-**OHSC** = Hermes Obsidian System Control.  
+**OHSC** = Obsidian System Control.  
 Control the vault. Expose the skill. Let any agent work safely.
