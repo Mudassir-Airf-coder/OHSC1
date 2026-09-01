@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OHSC — Obsidian System Control</title>
+  <meta name="description" content="OHSC is a local multi-agent control plane for Obsidian vaults. Any AI tool can activate it via one skill and CLI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #07090f; --card: rgba(18, 24, 40, 0.72); --border: rgba(140, 160, 255, 0.14);
+      --text: #eef2ff; --muted: #9aa6c5; --accent: #7c9cff; --accent2: #5ef0c8;
+      --glow: rgba(124, 156, 255, 0.35); --font: "Syne", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; line-height: 1.55; }
+    .bg { position: fixed; inset: 0; z-index: -2; background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(124,156,255,.22), transparent 55%),
+      radial-gradient(900px 500px at 90% 10%, rgba(94,240,200,.12), transparent 50%),
+      radial-gradient(800px 600px at 50% 110%, rgba(255,123,156,.08), transparent 45%),
+      linear-gradient(180deg, #07090f 0%, #0a0e18 50%, #07090f 100%); }
+    .grid { position: fixed; inset: 0; z-index: -1;
+      background-image: linear-gradient(rgba(124,156,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(124,156,255,.05) 1px, transparent 1px);
+      background-size: 48px 48px; mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      animation: gridDrift 28s linear infinite; }
+    @keyframes gridDrift { from { transform: translateY(0); } to { transform: translateY(48px); } }
+    .orb { position: fixed; border-radius: 50%; filter: blur(60px); z-index: -1; opacity: .45; pointer-events: none; animation: float 12s ease-in-out infinite; }
+    .orb.a { width: 320px; height: 320px; background: #7c9cff; top: 12%; left: -80px; }
+    .orb.b { width: 280px; height: 280px; background: #5ef0c8; bottom: 8%; right: -60px; animation-delay: -4s; }
+    @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-24px) scale(1.05); } }
+    .wrap { width: min(1100px, 92%); margin: 0 auto; }
+    header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(14px); background: rgba(7,9,15,.65); border-bottom: 1px solid transparent; }
+    header.scrolled { border-bottom-color: var(--border); }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); font-weight: 700; letter-spacing: -.02em; font-size: 1.15rem; }
+    .mark { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: grid; place-items: center; font-family: var(--mono); font-size: .72rem; font-weight: 600; color: #061018; box-shadow: 0 0 24px var(--glow); }
+    nav { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    nav a { color: var(--muted); text-decoration: none; font-size: .92rem; padding: 8px 12px; border-radius: 999px; transition: .2s ease; }
+    nav a:hover { color: var(--text); background: rgba(255,255,255,.04); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: rgba(255,255,255,.03);
+      color: var(--text); text-decoration: none; border-radius: 999px; padding: 10px 16px; font-size: .92rem; font-weight: 600; transition: .2s ease; cursor: pointer; }
+    .btn:hover { border-color: rgba(124,156,255,.4); box-shadow: 0 0 0 4px rgba(124,156,255,.08); transform: translateY(-1px); }
+    .btn.primary { background: linear-gradient(135deg, #6f8fff, #5ad6b3); color: #061018; border: none; box-shadow: 0 8px 30px rgba(124,156,255,.25); }
+    hero { display: block; padding: 64px 0 40px; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: rgba(124,156,255,.08);
+      color: var(--accent); border-radius: 999px; padding: 6px 12px; font-family: var(--mono); font-size: .78rem; margin-bottom: 22px; }
+    .badge i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); box-shadow: 0 0 10px var(--accent2); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.05; letter-spacing: -.04em; max-width: 16ch; margin-bottom: 18px; }
+    h1 span { background: linear-gradient(120deg, #fff 10%, var(--accent) 45%, var(--accent2) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { color: var(--muted); font-size: clamp(1.05rem, 2.2vw, 1.25rem); max-width: 52ch; margin-bottom: 28px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .terminal { position: relative; background: linear-gradient(180deg, rgba(16,22,36,.95), rgba(10,14,24,.98)); border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.45); max-width: 720px; }
+    .terminal-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.02); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; } .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+    .terminal-title { margin-left: 8px; color: var(--muted); font-family: var(--mono); font-size: .78rem; }
+    .terminal-body { padding: 18px; font-family: var(--mono); font-size: .92rem; }
+    .line { display: flex; gap: 10px; } .prompt { color: var(--accent2); } .cmd { color: var(--text); word-break: break-all; }
+    .muted-line { color: var(--muted); margin-top: 8px; font-size: .84rem; }
+    .copy-btn { position: absolute; top: 10px; right: 10px; font-family: var(--mono); font-size: .72rem; border: 1px solid var(--border);
+      background: rgba(0,0,0,.35); color: var(--muted); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+    section { padding: 56px 0; }
+    .sec-title { font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -.03em; margin-bottom: 10px; }
+    .sec-sub { color: var(--muted); max-width: 60ch; margin-bottom: 28px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 860px) { .grid-3 { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; backdrop-filter: blur(10px); transition: .25s ease; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(124,156,255,.35); box-shadow: 0 18px 40px rgba(0,0,0,.3); }
+    .card h3 { font-size: 1.1rem; margin-bottom: 8px; } .card p { color: var(--muted); font-size: .95rem; }
+    .icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(124,156,255,.12); color: var(--accent); margin-bottom: 14px; font-family: var(--mono); font-weight: 600; }
+    .flow { font-family: var(--mono); font-size: .9rem; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; overflow-x: auto; }
+    .flow code { color: var(--accent2); }
+    .steps { display: grid; gap: 14px; }
+    .step { display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 16px; border-radius: 16px; border: 1px solid var(--border); background: var(--card); }
+    .n { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(124,156,255,.25), rgba(94,240,200,.15)); font-weight: 700; }
+    footer { border-top: 1px solid var(--border); padding: 28px 0 40px; color: var(--muted); font-size: .9rem; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    footer a { color: var(--accent); text-decoration: none; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.show { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+  <div class="bg"></div><div class="grid"></div><div class="orb a"></div><div class="orb b"></div>
+  <div class="wrap">
+    <header id="topbar">
+      <a class="logo" href="#"><span class="mark">OH</span><span>OHSC</span></a>
+      <nav>
+        <a href="#features">Features</a><a href="#install">Install</a><a href="#agents">Agents</a><a href="#architecture">Architecture</a>
+        <a class="btn" href="https://github.com/Mudassir-Airf-coder/OHSC1" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+    <hero>
+      <div class="badge reveal"><i></i> Local · Multi-agent · Vault-safe</div>
+      <h1 class="reveal">Control your <span>Obsidian vault</span> from any AI tool.</h1>
+      <p class="lead reveal">OHSC is a local multi-agent control plane for Obsidian. One skill file. One CLI. Safe notes, links, search, snapshots — and Graphify knowledge graphs.</p>
+      <div class="cta-row reveal">
+        <a class="btn primary" href="#install">Get started</a>
+        <a class="btn" href="https://github.com/Mudassir-Airf-coder/OHSC1" target="_blank" rel="noopener">View on GitHub →</a>
+        <a class="btn" href="https://github.com/Mudassir-Airf-coder/OHSC1/blob/main/skills/OHSC_AGENT_SKILL.md" target="_blank" rel="noopener">Agent Skill</a>
+      </div>
+      <div class="terminal reveal" id="install">
+        <button class="copy-btn" id="copyBtn" type="button">Copy</button>
+        <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="terminal-title">one-liner install</span></div>
+        <div class="terminal-body">
+          <div class="line"><span class="prompt">$</span><span class="cmd" id="cmd">git clone https://github.com/Mudassir-Airf-coder/OHSC1.git && cd OHSC1 && pip install -e . && ohsc run</span></div>
+          <div class="muted-line"># then set OHSC_VAULT_ROOT to your Obsidian vault path</div>
+        </div>
+      </div>
+    </hero>
+    <section id="features">
+      <h2 class="sec-title reveal">Built for real vault work</h2>
+      <p class="sec-sub reveal">A control plane your agents can drive — with permissions, path safety, and structured results.</p>
+      <div class="grid-3">
+        <article class="card reveal"><div class="icon">01</div><h3>Universal agent gateway</h3><p>Any AI coding tool reads one skill and drives OHSC through the CLI.</p></article>
+        <article class="card reveal"><div class="icon">02</div><h3>16 specialized agents</h3><p>Notes, search, links, templates, dashboards, bulk ops, snapshots, reviewer.</p></article>
+        <article class="card reveal"><div class="icon">03</div><h3>Graphify intelligence</h3><p>Semantic graphs, query, shortest path, hubs, communities, orphans.</p></article>
+        <article class="card reveal"><div class="icon">04</div><h3>Safety by default</h3><p>Path containment, op classes, explicit authorization, snapshots.</p></article>
+        <article class="card reveal"><div class="icon">05</div><h3>Session token flow</h3><p><code style="font-family:var(--mono);color:var(--accent2)">ohsc run</code> prints a local session token for any tool.</p></article>
+        <article class="card reveal"><div class="icon">06</div><h3>Local-first</h3><p>Runs on your machine. Optional Graphify Brain via env vars only.</p></article>
+      </div>
+    </section>
+    <section id="agents">
+      <h2 class="sec-title reveal">How agents use OHSC</h2>
+      <div class="steps">
+        <div class="step reveal"><div class="n">1</div><div><strong>Install & configure</strong><br /><span style="color:var(--muted)">Clone, pip install -e ., set OHSC_VAULT_ROOT.</span></div></div>
+        <div class="step reveal"><div class="n">2</div><div><strong>Start a session</strong><br /><span style="color:var(--muted)">Run ohsc run — copy the token if needed.</span></div></div>
+        <div class="step reveal"><div class="n">3</div><div><strong>Load the skill</strong><br /><span style="color:var(--muted)">Point the AI tool at skills/OHSC_AGENT_SKILL.md.</span></div></div>
+        <div class="step reveal"><div class="n">4</div><div><strong>Discover & execute</strong><br /><span style="color:var(--muted)">ohsc capabilities --json → natural language or Graphify.</span></div></div>
+      </div>
+    </section>
+    <section id="architecture">
+      <h2 class="sec-title reveal">Architecture at a glance</h2>
+      <div class="flow reveal"><pre style="margin:0;white-space:pre;color:var(--muted)">User / AI Agent
+      │
+      ▼
+ CLI / Gateway   <code>ohsc run | activate | capabilities</code>
+      │
+      ▼
+ Orchestrator → Planner → Workflow Engine
+      │
+      ▼
+ Agent Registry (16 agents)
+      │
+      ▼
+ PathSafety + Permissions → Vault | Graphify → Reviewer</pre></div>
+    </section>
+    <section>
+      <h2 class="sec-title reveal">Commands you’ll use daily</h2>
+      <div class="grid-3">
+        <article class="card reveal"><h3>ohsc run</h3><p>Start session and print token.</p></article>
+        <article class="card reveal"><h3>ohsc activate</h3><p>Gateway health & capability status.</p></article>
+        <article class="card reveal"><h3>ohsc agents</h3><p>List all registered agents.</p></article>
+        <article class="card reveal"><h3>ohsc "…"</h3><p>Natural-language vault task.</p></article>
+        <article class="card reveal"><h3>ohsc --graphify build</h3><p>Build semantic knowledge graph.</p></article>
+        <article class="card reveal"><h3>ohsc doctor</h3><p>Diagnostics when something feels off.</p></article>
+      </div>
+    </section>
+    <footer>
+      <div>© <span id="y"></span> OHSC — Obsidian System Control</div>
+      <div>
+        <a href="https://github.com/Mudassir-Airf-coder/OHSC1">GitHub</a> ·
+        <a href="https://github.com/Mudassir-Airf-coder/OHSC1/blob/main/README.md">Docs</a> ·
+        <a href="https://github.com/Mudassir-Airf-coder/OHSC1/blob/main/LICENSE">MIT License</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+    const bar = document.getElementById("topbar");
+    window.addEventListener("scroll", () => bar.classList.toggle("scrolled", window.scrollY > 8));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("show"); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    const btn = document.getElementById("copyBtn");
+    const cmd = document.getElementById("cmd").textContent;
+    btn.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(cmd); btn.textContent = "Copied"; setTimeout(() => (btn.textContent = "Copy"), 1400); }
+      catch { btn.textContent = "Select & copy"; }
+    });
+  </script>
+</body>
+</html>
