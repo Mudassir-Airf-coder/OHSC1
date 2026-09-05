@@ -33,33 +33,17 @@ from ...core.logging import get_logger
 
 logger = get_logger("ohsc.integrations.graphify")
 
-# Transient-retry policy for subprocess calls into the external ``graphify``
-# CLI (which in turn talks to the configured LLM). Backend cold-starts /
-# network blips can cause one-shot timeouts or non-zero exits that succeed on
-# the next attempt. We retry with bounded exponential backoff; permanent
-# failures (CLI missing, bad args, repeated timeouts) bubble up immediately
-# so we don't paper over real bugs.
-_TRANSIENT_RETRIES = 2          # max additional attempts (3 total)
-_TRANSIENT_BACKOFF_S = (1.0, 3.0)  # sleep between attempts
-
-# Circuit breaker: after N consecutive FAILED _run() invocations (each of
-# which already exhausted its own retry budget), short-circuit subsequent
-# calls for a cooldown window. The breaker is per-GraphifyClient so test
-# isolation is preserved. Half-open probe after cooldown.
-_BREAKER_THRESHOLD = 3          # consecutive failed _run() to open
-_BREAKER_COOLDOWN_S = 30.0       # how long to stay open
-_BREAKER_HALF_OPEN = "half_open" # state strings
+_TRANSIENT_RETRIES = 2
+_TRANSIENT_BACKOFF_S = (1.0, 3.0)
+_BREAKER_THRESHOLD = 3
+_BREAKER_COOLDOWN_S = 30.0
+_BREAKER_HALF_OPEN = "half_open"
 _BREAKER_CLOSED = "closed"
 _BREAKER_OPEN = "open"
 
 
 class GraphifyUnavailable(RuntimeError):
-    """Raised when the circuit breaker is open and short-circuits a call.
-
-    The caller (runner / agent) should surface this as a transient error
-    and skip rather than burn budget. After cooldown the next call is
-    allowed as a half-open probe; success closes the breaker.
-    """
+    """Raised when the circuit breaker is open and short-circuits a call."""
 
 
 @dataclass
@@ -69,7 +53,6 @@ class _Breaker:
     opened_at: float = 0.0
 
     def allow(self) -> bool:
-        """Return True if a call is allowed to proceed right now."""
         if self.state == _BREAKER_CLOSED:
             return True
         if self.state == _BREAKER_OPEN:
@@ -77,8 +60,6 @@ class _Breaker:
                 self.state = _BREAKER_HALF_OPEN
                 return True
             return False
-        # half_open: allow exactly one probe at a time; the next call after
-        # the probe settles will resolve state.
         return True
 
     def record_success(self) -> None:
@@ -102,14 +83,6 @@ def _looks_transient(text: str) -> bool:
 
 
 def _is_transient(proc: "subprocess.CompletedProcess", exc: Optional[BaseException]) -> bool:
-    """Return True when the subprocess failure is worth retrying.
-
-    Heuristic: timeouts always retry. Non-zero returncodes retry if EITHER
-    stderr OR stdout carries a transient-looking signal (timeout / 5xx /
-    network / retry). Permanent errors (bad args, auth) surface immediately.
-    Scanning both streams matters because the upstream CLI may wrap
-    backend errors as JSON in stdout instead of writing to stderr.
-    """
     if isinstance(exc, subprocess.TimeoutExpired):
         return True
     if proc is None or proc.returncode == 0:
@@ -140,29 +113,18 @@ class GraphQueryResult:
 
 
 class GraphifyClient:
-    """Thin, safe wrapper around the ``graphify`` CLI.
-
-    NOTE on environment isolation: Graphify is installed in its own uv-tool
-    Python venv. The host process (e.g. the Hermes agent venv) may export a
-    ``PYTHONPATH`` that shadows Graphify's bundled numpy/openai with incompatible
-    copies, causing hard import crashes. Every subprocess therefore runs with
-    ``PYTHONPATH`` stripped so Graphify always resolves its own dependencies.
-    """
+    """Thin, safe wrapper around the ``graphify`` CLI."""
 
     def __init__(self, graphify_bin: Optional[str] = None, timeout: int = 600) -> None:
         self.bin = graphify_bin or self._detect_binary()
         self.timeout = timeout
-        # Per-client circuit breaker. Isolated across instances so tests
-        # sharing the module don't leak failure state into each other.
         self.breaker = _Breaker()
 
-    # -- discovery --------------------------------------------------------
     @staticmethod
     def _detect_binary() -> Optional[str]:
         found = shutil.which("graphify")
         if found:
             return found
-        # uv-installed tools usually live here; fall back to module form.
         return None
 
     def is_available(self) -> bool:
@@ -171,13 +133,23 @@ class GraphifyClient:
     def _resolve(self) -> Optional[str]:
         if self.bin:
             return self.bin
-        # Try python -m graphify as a fallback (same package).
-        return "python -m graphify" if self._module_runs() else None
+        found = shutil.which("graphify")
+        if found:
+            return found
+        return f"{self._python_bin()} -m graphify" if self._module_runs() else None
+
+    @staticmethod
+    def _python_bin() -> str:
+        """Prefer python3 (Ubuntu/Debian), fall back to python (Windows/venv)."""
+        for cand in ("python3", "python"):
+            if shutil.which(cand):
+                return cand
+        return "python3"
 
     def _module_runs(self) -> bool:
         try:
             subprocess.run(
-                ["python", "-m", "graphify", "--help"],
+                [self._python_bin(), "-m", "graphify", "--help"],
                 capture_output=True, timeout=30,
                 env=self._clean_env(),
             )
@@ -187,14 +159,24 @@ class GraphifyClient:
 
     @staticmethod
     def _clean_env() -> Dict[str, str]:
-        """Return a copy of the environment with PYTHONPATH removed.
-
-        This prevents the host venv's site-packages from shadowing Graphify's
-        own numpy/openai and triggering ABI import crashes.
-        """
         env = dict(os.environ)
         env.pop("PYTHONPATH", None)
         return env
+
+    @staticmethod
+    def _openai_compatible_provider() -> bool:
+        backend = (os.environ.get("GRAPHIFY_BRAIN_BACKEND") or "").strip().lower()
+        if backend in ("groq", "openrouter", "openai"):
+            return True
+        base = (os.environ.get("OPENAI_BASE_URL") or "").strip()
+        return bool(base)
+
+    def _inject_openai_backend(self, cmd: List[str], env: Dict[str, str]) -> List[str]:
+        if not self._openai_compatible_provider() and not env.get("OPENAI_API_KEY"):
+            return cmd
+        if "--backend" not in cmd:
+            cmd = list(cmd) + ["--backend", "openai"]
+        return cmd
 
     def _run(self, cmd: List[str], env: Optional[Dict[str, str]] = None) -> "subprocess.CompletedProcess":
         if not self.breaker.allow():
@@ -212,14 +194,11 @@ class GraphifyClient:
                     self.breaker.record_success()
                     return proc
                 if attempt == _TRANSIENT_RETRIES:
-                    # out of attempts; classify for the breaker BEFORE returning
                     if _is_transient(proc, None):
                         self.breaker.record_failure()
                     return proc
                 if not _is_transient(proc, None):
-                    # permanent — breaker unaffected
                     return proc
-                # transient — log + back off + retry
                 logger.warning(
                     f"graphify transient exit rc={proc.returncode} "
                     f"attempt={attempt + 1}/{_TRANSIENT_RETRIES + 1}; "
@@ -233,12 +212,10 @@ class GraphifyClient:
                     f"graphify timeout after {self.timeout}s "
                     f"attempt={attempt + 1}/{_TRANSIENT_RETRIES + 1}; retrying.")
             time.sleep(_TRANSIENT_BACKOFF_S[min(attempt, len(_TRANSIENT_BACKOFF_S) - 1)])
-        # unreachable; loop returns or raises
         assert last_exc is not None
         raise last_exc
 
     def version(self) -> str:
-        """Return the installed graphify version string, or '' if unknown."""
         exe = self._resolve()
         if not exe:
             return ""
@@ -248,34 +225,28 @@ class GraphifyClient:
             else:
                 out = self._run(exe.split() + ["--version"]).stdout
             return out.strip().splitlines()[0] if out.strip() else ""
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.warning(f"graphify version probe failed: {exc}")
             return ""
 
-    # -- build ------------------------------------------------------------
     def build_graph(self, source_dir: Path, out_dir: Path,
                     env: Optional[Dict[str, str]] = None) -> GraphBuildResult:
-        """Run ``graphify extract`` against ``source_dir``.
-
-        Output is redirected to ``out_dir`` by copying graphify-out after the
-        run (graphify writes into the source dir by default). READ-ONLY on the
-        source vault.
-        """
         exe = self._resolve()
         if not exe:
             return GraphBuildResult(ok=False, error="GRAPHIFY UNAVAILABLE")
         source_dir = Path(source_dir)
         out_dir = Path(out_dir)
         out_dir.mkdir(parents=True, exist_ok=True)
-        # Graphify writes into <source>/graphify-out; we run there then move.
+        run_env = env if env is not None else self._clean_env()
         cmd = (exe.split() if " " in exe else [exe]) + ["extract", str(source_dir)]
+        cmd = self._inject_openai_backend(cmd, run_env)
         try:
-            proc = self._run(cmd, env=env)
+            proc = self._run(cmd, env=run_env)
         except GraphifyUnavailable as exc:
             return GraphBuildResult(ok=False, error=f"GRAPHIFY UNAVAILABLE: {exc}")
         except subprocess.TimeoutExpired:
             return GraphBuildResult(ok=False, error="GRAPHIFY TIMEOUT")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return GraphBuildResult(ok=False, error=f"GRAPHIFY SUBPROCESS ERROR: {exc}")
 
         src_out = source_dir / "graphify-out"
@@ -285,7 +256,6 @@ class GraphifyClient:
                 ok=False, error="GRAPH BUILD FAILED",
                 stdout=proc.stdout, stderr=proc.stderr,
             )
-        # Move generated artifacts into the OHSC workspace (never leave in vault).
         moved_graph = out_dir / "graph.json"
         shutil.copy2(graph_path, moved_graph)
         html_path = None
@@ -299,7 +269,6 @@ class GraphifyClient:
                     html_path = dst
                 else:
                     report_path = dst
-        # Clean the graphify-out dir from the source vault.
         shutil.rmtree(src_out, ignore_errors=True)
         return GraphBuildResult(
             ok=True, graph_path=moved_graph, html_path=html_path,
@@ -307,24 +276,15 @@ class GraphifyClient:
             stdout=proc.stdout, stderr=proc.stderr,
         )
 
-    # -- query ------------------------------------------------------------
     def query(self, question: str, graph_path: Path,
               mode: str = "query", extra_args: Optional[List[str]] = None,
               positional: Optional[List[str]] = None,
               env: Optional[Dict[str, str]] = None) -> GraphQueryResult:
-        """Run a graph query / path / explain and return the text answer.
-
-        ``positional`` lets callers pass separate positional CLI arguments
-        (e.g. ``path`` needs source and target as two distinct args, not one
-        space-joined string). ``extra_args`` appends flags like ``--undirected``.
-        """
         exe = self._resolve()
         if not exe:
-            return GraphQueryResult(ok=False, query=question,
-                                    error="GRAPHIFY UNAVAILABLE")
+            return GraphQueryResult(ok=False, query=question, error="GRAPHIFY UNAVAILABLE")
         if not Path(graph_path).exists():
-            return GraphQueryResult(ok=False, query=question,
-                                    error="GRAPH NOT BUILT")
+            return GraphQueryResult(ok=False, query=question, error="GRAPH NOT BUILT")
         cmd = (exe.split() if " " in exe else [exe]) + [mode]
         if positional:
             cmd.extend(positional)
@@ -336,27 +296,17 @@ class GraphifyClient:
         try:
             proc = self._run(cmd, env=env if env is not None else self._clean_env())
         except GraphifyUnavailable as exc:
-            return GraphQueryResult(ok=False, query=question,
-                                    error=f"GRAPHIFY UNAVAILABLE: {exc}")
+            return GraphQueryResult(ok=False, query=question, error=f"GRAPHIFY UNAVAILABLE: {exc}")
         except subprocess.TimeoutExpired:
             return GraphQueryResult(ok=False, query=question, error="GRAPHIFY TIMEOUT")
-        except Exception as exc:  # noqa: BLE001
-            return GraphQueryResult(ok=False, query=question,
-                                    error=f"GRAPHIFY SUBPROCESS ERROR: {exc}")
+        except Exception as exc:
+            return GraphQueryResult(ok=False, query=question, error=f"GRAPHIFY SUBPROCESS ERROR: {exc}")
         if proc.returncode != 0:
-            return GraphQueryResult(ok=False, query=question,
-                                    error="GRAPH QUERY FAILED", raw=proc.stderr)
-        return GraphQueryResult(ok=True, query=question,
-                                answer=proc.stdout.strip(), raw=proc.stdout)
+            return GraphQueryResult(ok=False, query=question, error="GRAPH QUERY FAILED", raw=proc.stderr)
+        return GraphQueryResult(ok=True, query=question, answer=proc.stdout.strip(), raw=proc.stdout)
 
     def shortest_path(self, source: str, target: str,
                       graph_path: Path, undirected: bool = True) -> GraphQueryResult:
-        """Shortest conceptual path between two notes.
-
-        Wikilinks are treated as bidirectional for knowledge discovery, so
-        ``--undirected`` is the default. ``source`` and ``target`` are passed
-        as separate positional CLI arguments.
-        """
         extra = ["--undirected"] if undirected else []
         return self.query(f"{source} -> {target}", graph_path, mode="path",
                           extra_args=extra, positional=[source, target])
