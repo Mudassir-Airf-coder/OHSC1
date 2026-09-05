@@ -1,19 +1,8 @@
 # OHSC — Obsidian System Control
 
-**A local multi-agent control plane for Obsidian vaults.**  
-Any AI coding tool can activate OHSC, read one skill file, and safely operate your knowledge base — notes, links, search, snapshots, and semantic graphs.
+**A local multi-agent control plane for Obsidian vaults**
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-active-success.svg)](#)
-
----
-
-## Why OHSC exists
-
-Obsidian vaults grow fast. Notes pile up, links break, structure drifts.
-
-OHSC exists so that **you or any AI agent** can control the vault through a **single, safe interface** instead of ad-hoc scripts and unsafe filesystem access.
+OHSC turns your Obsidian vault into a **safe, structured, agent-controllable interface** instead of ad-hoc scripts and unsafe filesystem access.
 
 It is not an Obsidian plugin UI controller.  
 It is a **control plane** over the vault filesystem + knowledge graph layer.
@@ -51,13 +40,28 @@ Any AI tool  →  OHSC skill + CLI  →  safe vault ops + Graphify
 - An Obsidian vault path (local folder of Markdown files)
 - Optional: Graphify + OpenCode (for semantic graph / Graphify Brain)
 
-### Install
+### Install (one command — recommended)
 
 ```bash
 git clone https://github.com/Mudassir-Airf-coder/OHSC1.git
 cd OHSC1
-pip install -e .
+
+# Linux / macOS
+bash setup.sh
+
+# Windows PowerShell
+.\setup.ps1
 ```
+
+`setup.sh` / `setup.ps1` will:
+1. Detect `python3` (or `python` fallback)
+2. `pip install -e .` so the `ohsc` command is available
+3. Install `uv` if missing
+4. Install Graphify CLI: `uv tool install "graphifyy[mcp,openai]"`
+5. Create `.env` from `.env.example` and optionally prompt for `GROQ_API_KEY`
+6. Run `ohsc doctor` for a health check
+
+Unattended / CI: `bash setup.sh --unattended`
 
 ### Configure
 
@@ -68,17 +72,19 @@ export OHSC_VAULT_ROOT="/path/to/your/obsidian/vault"
 
 # Windows PowerShell
 $env:OHSC_SYSTEM_ROOT = (Get-Location).Path
-$env:OHSC_VAULT_ROOT = "C:\\path\\to\\your\\obsidian\\vault"
+$env:OHSC_VAULT_ROOT = "C:\path\to\your\obsidian\vault"
 ```
 
-Optional secrets (never commit):
+Secrets live in `.env` (never commit). Recommended defaults:
 
 ```bash
-# .env (local only)
-OPENCODE_API_KEY=your_key_here
-GRAPHIFY_BRAIN_BACKEND=opencode
-GRAPHIFY_BRAIN_MODEL=opencode/hy3-free
+GRAPHIFY_BRAIN_BACKEND=groq
+GRAPHIFY_BRAIN_MODEL=openai/gpt-oss-120b
+GROQ_API_KEY=your_groq_key_here
 ```
+
+Only `GROQ_API_KEY` is required for Graphify. OHSC automatically maps it to the
+`OPENAI_*` variables the external `graphify` CLI expects — no manual export needed.
 
 ### Run
 
@@ -87,214 +93,103 @@ ohsc run                 # start session + print session token
 ohsc activate            # health / capability status
 ohsc agents              # list 16 agents
 ohsc capabilities --json # machine-readable manifest
-ohsc doctor              # diagnostics
+ohsc doctor              # environment / dependency diagnostics
+ohsc --graphify build "$OHSC_VAULT_ROOT"
 ```
 
 ### Use from any AI tool
 
 1. Run `ohsc run` and copy the **session token** if the tool asks for one  
-2. Point the tool at [`skills/OHSC_AGENT_SKILL.md`](skills/OHSC_AGENT_SKILL.md)  
-3. The tool discovers capabilities and drives OHSC via CLI  
+2. Point the tool at `skills/OHSC_AGENT_SKILL.md`  
+3. Ask it to operate the vault through OHSC only (never raw filesystem writes)
+
+---
+
+## Architecture (high level)
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│  Any AI tool / agent (Claude Code, OpenCode, Cursor, …)    │
+└──────────────────────────┬──────────────────────────────────┘
+                           │  skill.md + CLI / session token
+┌──────────────────────────▼──────────────────────────────────┐
+│  OHSC CLI / Gateway                                         │
+│  ohsc run | activate | doctor | natural-language tasks      │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────┐
+│  Orchestrator → Planner → Workflow Engine → Reviewer        │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+        ┌──────────────────┼──────────────────┐
+        ▼                  ▼                  ▼
+   16 domain agents   PathSafety +       Graphify client
+   (note, search,     permissions +      (extract / query /
+    folder, …)        snapshots          path / explain)
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for details.
+
+---
+
+## Graphify
+
+Graphify turns a folder of notes (and mixed content) into a queryable semantic graph.
 
 ```bash
-ohsc "create a note titled Hello with content Hi there"
-ohsc --dry-run "create a MOC for Python"
-ohsc --authorized "create a note titled Plan"
 ohsc --graphify build "$OHSC_VAULT_ROOT"
-ohsc --graphify analyze
+ohsc --graphify query "What connects X and Y?"
+ohsc --graphify path "Concept A" "Concept B"
 ```
 
----
+Requires:
+- `GROQ_API_KEY` (or another configured OpenAI-compatible backend)
+- Graphify CLI installed via setup (`uv tool install "graphifyy[mcp,openai]"`)
 
-## How it works (core architecture)
-
-```text
-User / AI Agent
-      │
-      ▼
-┌─────────────────────┐
-│  CLI / Gateway      │  ohsc run | activate | capabilities | agents
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│  Orchestrator       │  plan → execute → review → memory
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│  Planner            │  natural language → WorkflowPlan
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│  Workflow Engine    │  ordered tasks, auth checks
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│  Agent Registry     │  16 specialized agents
-└──────────┬──────────┘
-           ▼
-   PathSafety + Permissions
-           ▼
-  Vault filesystem  |  Graphify integration
-           ▼
-      Reviewer → Memory
-```
-
-### Design rules (enforced in code)
-
-- **No giant god-agent** — specialized agents, one responsibility each  
-- **No silent failures** — structured `AgentResult` everywhere  
-- **No unauthorized writes** — READ / WRITE / DESTRUCTIVE + explicit auth  
-- **No path escape** — central `PathSafety` allowed roots  
-- **Recoverable** — snapshots / transactions before risky ops  
-- **Agent-accessible** — skill + CLI, not internal Python imports required  
-
----
-
-## Agents (16)
-
-| Agent | Role |
-|---|---|
-| `permission_agent` | Authorization decisions |
-| `snapshot_agent` | Snapshots / rollback points |
-| `transaction_agent` | Multi-step transaction + rollback |
-| `reviewer_agent` | Structured PASS / FAIL review |
-| `vault_agent` | Vault-level operations |
-| `note_agent` | Note CRUD |
-| `search_agent` | Search queries |
-| `folder_agent` | Folder structure |
-| `linking_agent` | Wikilinks / orphans |
-| `metadata_agent` | Frontmatter / properties |
-| `template_agent` | Templates |
-| `periodic_agent` | Daily / weekly notes |
-| `canvas_agent` | Canvas |
-| `dashboard_agent` | MOCs / dashboards |
-| `bulk_agent` | Bulk operations |
-| `graphify_agent` | Semantic graph intelligence |
-
----
-
-## Graphify (knowledge graph layer)
-
-OHSC keeps Graphify as a **subsystem**, not a merge into core:
-
-- **Build** semantic graph from vault (read-only on vault)  
-- **Query** natural-language questions over the graph  
-- **Shortest path** between concepts  
-- **Explain** node relationships  
-- **Analyze** hubs, communities, orphans  
-
-Artifacts are written under the OHSC workspace (not inside the user vault by default).
-
-Graphify Brain (optional LLM backend) is configured for **OpenCode** (`opencode/hy3-free`). API keys stay in environment variables only.
-
----
-
-## Project structure
-
-```text
-OHSC1/
-├── ohsc/                      # Python package
-│   ├── core/                  # orchestrator, planner, safety, memory, ...
-│   ├── agents/                # 16 specialized agents
-│   ├── integrations/graphify/ # Graphify client/runner/brain/MCP
-│   ├── cli.py                 # CLI entry
-│   ├── gateway.py             # capability gateway
-│   ├── config.py              # portable configuration
-│   └── system.py              # runtime bootstrap
-├── skills/
-│   └── OHSC_AGENT_SKILL.md    # agent-facing operating manual
-├── capabilities/
-│   └── capabilities.json      # machine-readable manifest
-├── config/
-│   └── ohsc.json              # non-secret settings
-├── docs/                      # guides & architecture notes
-├── tests/                     # pytest suite
-├── scripts/                   # dev helpers
-├── ohsc_launcher.py           # console script entry
-├── pyproject.toml             # packaging
-└── README.md
-```
-
----
-
-## Configuration reference
-
-| Variable | Purpose |
-|---|---|
-| `OHSC_SYSTEM_ROOT` | Install / workspace root (default: package location) |
-| `OHSC_VAULT_ROOT` | Path to Obsidian vault |
-| `OPENCODE_API_KEY` | Optional Graphify Brain secret |
-| `GRAPHIFY_BRAIN_BACKEND` | Default: `opencode` |
-| `GRAPHIFY_BRAIN_MODEL` | Default: `opencode/hy3-free` |
-
-See [`.env.example`](.env.example).
+OHSC injects `OPENAI_API_KEY` / `OPENAI_BASE_URL` / `OPENAI_MODEL` into the Graphify subprocess automatically when `GRAPHIFY_BRAIN_BACKEND` is `groq`, `openrouter`, or `openai`.
 
 ---
 
 ## Safety model
 
-1. **PathSafety** — operations only inside allowed roots  
-2. **Permissions** — READ / WRITE / DESTRUCTIVE classification  
-3. **Authorization** — destructive / write paths need `--authorized`  
-4. **Snapshots** — capture before risky changes  
-5. **Reviewer** — structured verification of outcomes  
-
----
-
-## Vision
-
-OHSC is the **local control plane** between humans, any AI coding agent, and an Obsidian knowledge environment.
-
-```text
-pip install / one-line install
-     → ohsc run
-     → token + skill
-     → any AI tool understands and controls the vault safely
-```
-
----
-
-## Documentation
-
-| Doc | Contents |
+| Layer | Role |
 |---|---|
-| [skills/OHSC_AGENT_SKILL.md](skills/OHSC_AGENT_SKILL.md) | **Start here if you are an AI agent** |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Core architecture |
-| [docs/USAGE.md](docs/USAGE.md) | How to use OHSC day to day |
+| **PathSafety** | All paths must stay inside `OHSC_VAULT_ROOT` |
+| **Permissions** | READ / WRITE / DESTRUCTIVE classes |
+| **Snapshots** | Pre-change recovery points |
+| **Reviewer** | Structured review before destructive work |
+| **Transaction** | Grouped ops with rollback support |
+
+Agents never bypass these layers.
+
+---
+
+## Honesty table
+
+| Area | Status |
+|---|---|
+| Core 16 agents + orchestrator | Implemented |
+| PathSafety / permissions / snapshots | Implemented |
+| Graphify client + optional Brain | Implemented |
+| Packaging (`pip install -e .`) | Implemented |
+| One-command setup (`setup.sh` / `setup.ps1`) | Implemented |
+| Cross-platform Python detection | Implemented |
+| Auto-map GROQ → OPENAI_* for Graphify CLI | Implemented |
+| Universal skill for external AI tools | Implemented (`skills/OHSC_AGENT_SKILL.md`) |
+| Obsidian plugin UI | Not in scope |
+| Cloud multi-user SaaS | Not in scope |
 
 ---
 
 ## Development
 
 ```bash
-export OHSC_SYSTEM_ROOT="$(pwd)"
-export OHSC_VAULT_ROOT="/tmp/ohsc_test_vault"
-pip install -e ".[dev]"
-python -m pytest
+python3 -m pip install -e ".[dev]"
+python3 -m pytest
 ```
-
----
-
-## Status & honesty
-
-| Area | Status |
-|---|---|
-| Core multi-agent runtime | Implemented |
-| CLI + gateway | Implemented |
-| Session token (`ohsc run`) | Implemented |
-| Portable config | Implemented |
-| Packaging (`pip install -e .`) | Implemented |
-| Graphify integration | Implemented (optional external binary) |
-| Universal one-line cloud installer | Not claimed yet |
-| Obsidian desktop app UI control | Not implemented (vault filesystem only) |
 
 ---
 
 ## License
 
 MIT — see [LICENSE](LICENSE).
-
----
-
-**OHSC** = Obsidian System Control.  
-Control the vault. Expose the skill. Let any agent work safely.

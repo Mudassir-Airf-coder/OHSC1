@@ -5,7 +5,17 @@
 ```bash
 git clone https://github.com/Mudassir-Airf-coder/OHSC1.git
 cd OHSC1
-pip install -e .
+bash setup.sh          # Linux / macOS  (or: .\setup.ps1 on Windows)
+# Unattended: bash setup.sh --unattended
+```
+
+Manual alternative (if you prefer not to use the setup script):
+
+```bash
+python3 -m pip install -e .
+# optional Graphify CLI:
+# curl -LsSf https://astral.sh/uv/install.sh | sh
+# uv tool install "graphifyy[mcp,openai]"
 ```
 
 ## Configure vault
@@ -38,40 +48,36 @@ ohsc status --json        # component health
 ```bash
 ohsc "find orphan notes"
 ohsc "create a note titled Inbox with content hello"
-ohsc --dry-run "create a MOC for Research"
-ohsc --authorized "create a note titled Decisions"
+ohsc "search for tags #project"
+ohsc --dry-run "create a MOC for Python"
 ```
 
 ## Graphify
 
 ```bash
+export GRAPHIFY_BRAIN_BACKEND=groq
+export GROQ_API_KEY=your_key   # or set in .env
+
 ohsc --graphify build "$OHSC_VAULT_ROOT"
-ohsc --graphify query "what are the main themes?"
-ohsc --graphify path --source "ConceptA" --target "ConceptB"
-ohsc --graphify explain "ConceptA"
-ohsc --graphify analyze
+ohsc --graphify query "What are the main themes?"
+ohsc --graphify path "Topic A" "Topic B"
 ```
 
-## Using OHSC from an AI tool
-
-1. Install and configure OHSC on the machine
-2. Run `ohsc run` (copy token if required)
-3. Load `skills/OHSC_AGENT_SKILL.md` into the tool’s skill / system context
-4. Let the tool call `ohsc capabilities --json` and `ohsc agents --json`
-5. Execute tasks through the CLI only for normal operation
-
-## Safety tips
-
-- Prefer `--dry-run` before first writes
-- Use `--authorized` only when you intend writes / destructive ops
-- Keep API keys in environment / `.env`, never in the repo
-- Point `OHSC_VAULT_ROOT` at a test vault until you trust the setup
+Only `GROQ_API_KEY` is required. OHSC maps it to the OPENAI_* env vars that
+the external `graphify` CLI expects and passes `--backend openai` automatically.
 
 ## Troubleshooting
 
-| Symptom | What to check |
+| Symptom | Fix |
 |---|---|
-| `ohsc` not found | `pip install -e .` from repo root; check PATH |
-| Wrong vault | `echo $OHSC_VAULT_ROOT` / PowerShell env |
-| Status DEGRADED | Optional Graphify / OpenCode missing — core can still work |
-| Path errors | Ensure portable env vars set; avoid old hardcoded paths |
+| `ohsc` not found | Run `bash setup.sh` or `python3 -m pip install -e .` from repo root; check PATH |
+| Graphify: UNAVAILABLE | `uv tool install "graphifyy[mcp,openai]" --force` |
+| no LLM API key found | Set `GROQ_API_KEY` (or matching key for your backend) in `.env` |
+| Groq HTTP 403 | Ensure User-Agent is present (current code includes it); check key validity |
+| `python` not found | Use `python3` — setup scripts already prefer it |
+
+## Session token flow
+
+1. `ohsc run` prints a short-lived session token.
+2. External AI tools that load `skills/OHSC_AGENT_SKILL.md` can present that token when calling OHSC.
+3. Token is local-only; treat it like a temporary capability grant.
