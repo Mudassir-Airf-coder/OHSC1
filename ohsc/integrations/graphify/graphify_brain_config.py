@@ -56,9 +56,10 @@ BACKEND_DEFAULTS: Dict[str, Dict[str, str]] = {
         "model": "openai/gpt-4o-mini",
     },
     "groq": {
-        "key_env": "GROQ_KEY_1",
+        "key_env": "GROQ_API_KEY",
         "base_url": "https://api.groq.com/openai/v1",
-        "model": "llama-3.1-8b-instant",
+        # Working Groq model id for this project (verify with your account).
+        "model": "openai/gpt-oss-120b",
     },
 }
 
@@ -100,7 +101,16 @@ class GraphifyBrainConfig:
 
     def api_key(self) -> str:
         """Return the resolved API key from the environment (NOT stored)."""
-        return os.environ.get(self.key_env or "", "") or ""
+        primary = os.environ.get(self.key_env or "", "") or ""
+        if primary:
+            return primary
+        # Aliases so either GROQ_API_KEY or GROQ_KEY_1 works for Groq.
+        if self.provider == "groq":
+            for alias in ("GROQ_API_KEY", "GROQ_KEY_1"):
+                val = os.environ.get(alias, "") or ""
+                if val:
+                    return val
+        return ""
 
     def has_key(self) -> bool:
         return bool(self.api_key())
