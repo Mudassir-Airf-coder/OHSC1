@@ -114,7 +114,7 @@ def main(argv=None) -> int:
             return 0
         return _gateway_command(cmd, as_json, _argv)
 
-    parser = argparse.ArgumentParser(prog="ohsc", description="Hermes Obsidian System Control")
+    parser = argparse.ArgumentParser(prog="ohsc", description="Obsidian System Control")
     parser.add_argument("request", nargs="*", help="Natural-language request")
     parser.add_argument("--dry-run", action="store_true", help="Preview changes only")
     parser.add_argument("--authorized", action="store_true",
@@ -167,6 +167,17 @@ def main(argv=None) -> int:
                 print("GRAPH PATH    :", out["data"]["graph_path"])
             if out["errors"]:
                 print("ERRORS        :", "; ".join(out["errors"]))
+            # Surface real subprocess output on failure (Issue G).
+            data = out.get("data") or {}
+            status = (out.get("status") or "").upper()
+            if status in ("FAILURE", "FAILED", "ERROR") or not res.ok():
+                for key in ("stderr", "stdout"):
+                    val = data.get(key)
+                    if val:
+                        tail = str(val)
+                        if len(tail) > 500:
+                            tail = "...(truncated)...\n" + tail[-500:]
+                        print(f"{key.upper():<14}:", tail)
             print("=" * 60)
         return 0 if res.ok() else 2
 
