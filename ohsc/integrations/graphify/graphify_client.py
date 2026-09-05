@@ -159,8 +159,42 @@ class GraphifyClient:
 
     @staticmethod
     def _clean_env() -> Dict[str, str]:
+        """Return a subprocess environment suitable for the external graphify CLI.
+
+        - Strips PYTHONPATH so the host venv cannot shadow graphifyy's own
+          numpy/openai (ABI crashes).
+        - When GRAPHIFY_BRAIN_BACKEND is an OpenAI-compatible provider (groq /
+          openrouter / openai), maps OHSC's resolved GraphifyBrainConfig into
+          the OPENAI_* variables that the external ``graphify`` CLI expects:
+            OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL
+          This way users only need GROQ_API_KEY (or the matching key) set;
+          they never have to manually export the three OPENAI_* vars.
+        - Existing OPENAI_* values already present in the environment are
+          left alone (caller override wins).
+        """
         env = dict(os.environ)
         env.pop("PYTHONPATH", None)
+
+        backend = (env.get("GRAPHIFY_BRAIN_BACKEND") or "").strip().lower()
+        openai_compatible = backend in ("groq", "openrouter", "openai") or bool(
+            (env.get("OPENAI_BASE_URL") or "").strip()
+        )
+        if not openai_compatible:
+            return env
+
+        try:
+            from .graphify_brain_config import GraphifyBrainConfig
+            cfg = GraphifyBrainConfig.from_env().resolve()
+            key = cfg.api_key()
+            if key and not env.get("OPENAI_API_KEY"):
+                env["OPENAI_API_KEY"] = key
+            if cfg.endpoint and not env.get("OPENAI_BASE_URL"):
+                env["OPENAI_BASE_URL"] = cfg.endpoint.rstrip("/")
+            if cfg.model and not env.get("OPENAI_MODEL"):
+                env["OPENAI_MODEL"] = cfg.model
+        except Exception as exc:
+            logger.debug("could not inject OPENAI_* from GraphifyBrainConfig: %s", exc)
+
         return env
 
     @staticmethod
@@ -172,6 +206,7 @@ class GraphifyClient:
         return bool(base)
 
     def _inject_openai_backend(self, cmd: List[str], env: Dict[str, str]) -> List[str]:
+        """Ensure ``--backend openai`` is present for OpenAI-compatible providers."""
         if not self._openai_compatible_provider() and not env.get("OPENAI_API_KEY"):
             return cmd
         if "--backend" not in cmd:
@@ -293,8 +328,10 @@ class GraphifyClient:
         cmd += ["--graph", str(graph_path)]
         if extra_args:
             cmd.extend(extra_args)
+        run_env = env if env is not None else self._clean_env()
+        cmd = self._inject_openai_backend(cmd, run_env)
         try:
-            proc = self._run(cmd, env=env if env is not None else self._clean_env())
+            proc = self._run(cmd, env=run_env)
         except GraphifyUnavailable as exc:
             return GraphQueryResult(ok=False, query=question, error=f"GRAPHIFY UNAVAILABLE: {exc}")
         except subprocess.TimeoutExpired:
