@@ -29,6 +29,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
+graphify = ["graphifyy[mcp,openai]"]
 
 [project.scripts]
 ohsc = "ohsc_launcher:main"
